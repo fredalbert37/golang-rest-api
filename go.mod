@@ -1,4 +1,4 @@
-module go-todos
+module golang-rest-api
 
 go 1.15
 

@@ -4,15 +4,15 @@ import (
 	"github.com/spf13/viper"
 )
 
+type Configuration struct {
+	Environment string
+	Mongo       MongoConfiguration
+}
+
 type MongoConfiguration struct {
 	Server     string
 	Database   string
 	Collection string
-}
-
-type Configuration struct {
-	Environment string
-	Mongo       MongoConfiguration
 }
 
 func GetConfig() Configuration {
@@ -23,7 +23,6 @@ func GetConfig() Configuration {
 	viper.AddConfigPath("./config")
 
 	err := viper.ReadInConfig()
-
 	if err != nil {
 		panic(err)
 	}
