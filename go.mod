@@ -1,4 +1,4 @@
-module golang-rest-api
+module github/fredalbert37/golang-rest-api
 
 go 1.15
 
