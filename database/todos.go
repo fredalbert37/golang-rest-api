@@ -22,6 +22,9 @@ type TodoClient struct {
 	Col *mongo.Collection
 }
 
+/*
+**Insert a Todo in database
+*/
 func (c *TodoClient) Insert(docs models.Todo) (models.Todo, error){
 	todo := models.Todo{}
 
@@ -33,6 +36,10 @@ func (c *TodoClient) Insert(docs models.Todo) (models.Todo, error){
 	return c.Get(id)
 }
 
+
+/*
+**Update a single Todo document in database
+ */
 func (c *TodoClient) Update(id string, update interface{}) (models.TodoUpdate, error){
 
 	result := models.TodoUpdate{
@@ -85,6 +92,9 @@ func (c *TodoClient) Update(id string, update interface{}) (models.TodoUpdate, e
 	return result,nil
 }
 
+/*
+**Delete a single Todo document in database
+ */
 func (c *TodoClient) Delete(id string) (models.TodoDelete, error){
 	result := models.TodoDelete{
 		DeletedCount: 0,
@@ -119,6 +129,9 @@ func (c *TodoClient) Get(id string) (models.Todo, error){
 	return todo, nil
 }
 
+/*
+**Search many or a single Todo document in database based on the filter params
+ */
 func (c *TodoClient) Search(filter interface{}) ([]models.Todo, error){
 	var todos []models.Todo
 	if filter == nil{
@@ -138,4 +151,20 @@ func (c *TodoClient) Search(filter interface{}) ([]models.Todo, error){
 
 	return todos, nil
 }
+
+/*
+**Return all Todo documents in database like a list
+ */
+func (c *TodoClient) List(filter interface{}) ([]models.Todo, error){
+	var todos []models.Todo
+	param := bson.M{}
+
+	cursor, err := c.Col.Find(c.Ctx, param)
+	if cursor.All(c.Ctx, &todos); err != nil{
+		return todos, err
+	}
+
+	return todos, nil
+}
+
 
