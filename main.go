@@ -26,6 +26,7 @@ func main() {
 	r.HandleFunc("/todos", handlers.InsertTodo(client)).Methods("POST")
 	r.HandleFunc("/todo/{id}", handlers.UpdateTodo(client)).Methods("PATCH")
 	r.HandleFunc("/todos/{id}", handlers.DeleteTodo(client)).Methods("DELETE")
+	r.HandleFunc("/todo/list", handlers.ListAllTodos(client)).Methods("GET")
 
 	_ = http.ListenAndServe(":8080", r)
 }

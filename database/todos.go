@@ -15,6 +15,7 @@ type TodoInterface interface {
 	Delete(string)(models.TodoDelete, error)
 	Get(string)(models.Todo, error)
 	Search(interface{})([]models.Todo, error)
+	List()([]models.Todo, error)
 }
 
 type TodoClient struct {
@@ -129,6 +130,19 @@ func (c *TodoClient) Get(id string) (models.Todo, error){
 	return todo, nil
 }
 
+//**Return all Todo documents in database like a list */
+func (c *TodoClient) List() ([]models.Todo, error){
+	var todos []models.Todo
+	param := bson.M{}
+
+	cursor, err := c.Col.Find(c.Ctx, param)
+	if cursor.All(c.Ctx, &todos); err != nil{
+		return todos, err
+	}
+
+	return todos, nil
+}
+
 /*
 **Search many or a single Todo document in database based on the filter params
  */
@@ -152,19 +166,7 @@ func (c *TodoClient) Search(filter interface{}) ([]models.Todo, error){
 	return todos, nil
 }
 
-/*
-**Return all Todo documents in database like a list
- */
-func (c *TodoClient) List(filter interface{}) ([]models.Todo, error){
-	var todos []models.Todo
-	param := bson.M{}
 
-	cursor, err := c.Col.Find(c.Ctx, param)
-	if cursor.All(c.Ctx, &todos); err != nil{
-		return todos, err
-	}
 
-	return todos, nil
-}
 
 
